@@ -36,7 +36,10 @@
     "level": "Level {{level}}",
     "xpTo": "{{current}}/{{next}} XP",
     "locked": "Locked",
-    "completed": "Complete"
+    "completed": "Complete",
+    "trackBasics": "Basics",
+    "trackIntermediate": "Intermediate",
+    "branchTitle": "Apni branch chuno"
   },
   "challenge": {
     "difficulty": "Difficulty",

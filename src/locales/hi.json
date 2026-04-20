@@ -42,7 +42,10 @@
     "level": "लेवल {{level}}",
     "xpTo": "{{current}}/{{next}} XP",
     "locked": "लॉक है",
-    "completed": "पूर्ण"
+    "completed": "पूर्ण",
+    "trackBasics": "बेसिक्स",
+    "trackIntermediate": "इंटरमीडिएट",
+    "branchTitle": "अपनी शाखा चुनें"
   },
   "challenge": {
     "difficulty": "कठिनाई",

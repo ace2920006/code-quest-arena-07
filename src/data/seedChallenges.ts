@@ -11,9 +11,12 @@ export interface LocalizedText {
   "hi-en": string;
 }
 
+export type Track = "basics" | "intermediate";
+
 export interface Challenge {
   id: string;
   order: number;
+  track?: Track;
   difficulty: "easy" | "medium" | "hard";
   xpReward: number;
   title: LocalizedText;
@@ -297,6 +300,318 @@ export const SEED_CHALLENGES: Challenge[] = [
     ],
   },
 ];
+
+// Mark all basic challenges
+SEED_CHALLENGES.forEach((c) => {
+  if (!c.track) c.track = "basics";
+});
+
+export const INTERMEDIATE_CHALLENGES: Challenge[] = [
+  {
+    id: "twoSum",
+    order: 11,
+    track: "intermediate",
+    difficulty: "medium",
+    xpReward: 200,
+    funcName: "twoSum",
+    title: t("Twin Daggers", "जुड़वाँ खंजर", "Twin Daggers"),
+    description: t(
+      "Return indices [i, j] of two numbers in arr that sum to target.",
+      "arr में दो संख्याओं के सूचकांक लौटाएँ जिनका योग target हो।",
+      "arr me do numbers ke indices return karo jinka sum target ho."
+    ),
+    hints: [
+      t("Use a hash map.", "हैश मैप का उपयोग।", "Hash map use karo."),
+      t("Store value -> index.", "value -> index स्टोर करें।", "value -> index store karo."),
+      t("Check target - n in map.", "target - n मैप में देखें।", "target - n map me check karo."),
+    ],
+    starter: {
+      javascript: "function twoSum(arr, target) {\n  // your code here\n}\n",
+      python: "def twoSum(arr, target):\n    pass\n",
+      java: "class Solution { public int[] twoSum(int[] arr, int target){return new int[]{}; } }\n",
+      cpp: "#include <vector>\nstd::vector<int> twoSum(std::vector<int> arr, int target){return {};}\n",
+    },
+    tests: [
+      { input: "twoSum([2,7,11,15], 9)", expected: "[0,1]" },
+      { input: "twoSum([3,2,4], 6)", expected: "[1,2]" },
+      { input: "twoSum([1,5,3,7], 10)", expected: "[2,3]" },
+    ],
+  },
+  {
+    id: "anagram",
+    order: 12,
+    track: "intermediate",
+    difficulty: "medium",
+    xpReward: 200,
+    funcName: "isAnagram",
+    title: t("Anagram Altar", "अनाग्राम वेदी", "Anagram Altar"),
+    description: t(
+      "Return true if strings a and b are anagrams of each other.",
+      "अगर a और b एक-दूसरे के anagram हैं तो true लौटाएँ।",
+      "Agar a aur b anagrams hain to true return karo."
+    ),
+    hints: [
+      t("Sort both strings.", "दोनों को sort करें।", "Dono ko sort karo."),
+      t("Or count characters.", "या characters गिनें।", "Ya characters count karo."),
+      t("Compare lengths first.", "पहले लंबाई जांचें।", "Pehle length check karo."),
+    ],
+    starter: {
+      javascript: "function isAnagram(a, b) {\n  // your code here\n}\n",
+      python: "def isAnagram(a, b):\n    pass\n",
+      java: "class Solution { public boolean isAnagram(String a, String b){return false;} }\n",
+      cpp: "#include <string>\nbool isAnagram(std::string a, std::string b){return false;}\n",
+    },
+    tests: [
+      { input: "isAnagram('listen','silent')", expected: "true" },
+      { input: "isAnagram('hello','world')", expected: "false" },
+      { input: "isAnagram('a','a')", expected: "true" },
+    ],
+  },
+  {
+    id: "uniqueArr",
+    order: 13,
+    track: "intermediate",
+    difficulty: "medium",
+    xpReward: 200,
+    funcName: "unique",
+    title: t("Crystal of Uniques", "अद्वितीय क्रिस्टल", "Unique Crystal"),
+    description: t(
+      "Return a new array with only unique values from arr, preserving order.",
+      "केवल अद्वितीय मानों के साथ नया array लौटाएँ।",
+      "Sirf unique values ka naya array return karo."
+    ),
+    hints: [
+      t("Use a Set.", "Set का उपयोग।", "Set use karo."),
+      t("[...new Set(arr)]", "[...new Set(arr)]", "[...new Set(arr)]"),
+      t("Order is preserved by Set.", "Set में क्रम बना रहता है।", "Set order maintain karta hai."),
+    ],
+    starter: {
+      javascript: "function unique(arr) {\n  // your code here\n}\n",
+      python: "def unique(arr):\n    pass\n",
+      java: "class Solution { public int[] unique(int[] arr){return new int[]{};} }\n",
+      cpp: "#include <vector>\nstd::vector<int> unique(std::vector<int> arr){return {};}\n",
+    },
+    tests: [
+      { input: "unique([1,2,2,3,1,4])", expected: "[1,2,3,4]" },
+      { input: "unique([])", expected: "[]" },
+      { input: "unique([5,5,5])", expected: "[5]" },
+    ],
+  },
+  {
+    id: "countVowels",
+    order: 14,
+    track: "intermediate",
+    difficulty: "easy",
+    xpReward: 175,
+    funcName: "countVowels",
+    title: t("Vowel Vault", "स्वर तिजोरी", "Vowel Vault"),
+    description: t(
+      "Return the number of vowels (a,e,i,o,u) in s, case-insensitive.",
+      "s में vowels की संख्या लौटाएँ।",
+      "s me vowels ki count return karo."
+    ),
+    hints: [
+      t("Lowercase first.", "पहले lowercase करें।", "Pehle lowercase karo."),
+      t("Use a regex /[aeiou]/g.", "regex /[aeiou]/g।", "regex /[aeiou]/g use karo."),
+      t("match returns array or null.", "match array या null।", "match array ya null deta hai."),
+    ],
+    starter: {
+      javascript: "function countVowels(s) {\n  // your code here\n}\n",
+      python: "def countVowels(s):\n    pass\n",
+      java: "class Solution { public int countVowels(String s){return 0;} }\n",
+      cpp: "#include <string>\nint countVowels(std::string s){return 0;}\n",
+    },
+    tests: [
+      { input: "countVowels('Hello')", expected: "2" },
+      { input: "countVowels('CodeQuest')", expected: "4" },
+      { input: "countVowels('xyz')", expected: "0" },
+    ],
+  },
+  {
+    id: "powerOf",
+    order: 15,
+    track: "intermediate",
+    difficulty: "medium",
+    xpReward: 200,
+    funcName: "power",
+    title: t("Power Stone", "शक्ति पत्थर", "Power Stone"),
+    description: t(
+      "Return base raised to exp (integer exp >= 0). Do not use Math.pow.",
+      "base की exp घात लौटाएँ।",
+      "base ki exp power return karo."
+    ),
+    hints: [
+      t("Loop and multiply.", "लूप और गुणा।", "Loop aur multiply."),
+      t("Start result at 1.", "result 1 से शुरू।", "result 1 se start karo."),
+      t("exp=0 returns 1.", "exp=0 → 1.", "exp=0 → 1."),
+    ],
+    starter: {
+      javascript: "function power(base, exp) {\n  // your code here\n}\n",
+      python: "def power(base, exp):\n    pass\n",
+      java: "class Solution { public int power(int base, int exp){return 0;} }\n",
+      cpp: "int power(int base,int exp){return 0;}\n",
+    },
+    tests: [
+      { input: "power(2, 10)", expected: "1024" },
+      { input: "power(5, 0)", expected: "1" },
+      { input: "power(3, 4)", expected: "81" },
+    ],
+  },
+  {
+    id: "gcd",
+    order: 16,
+    track: "intermediate",
+    difficulty: "medium",
+    xpReward: 225,
+    funcName: "gcd",
+    title: t("Common Divisor Quest", "महत्तम समापवर्तक", "GCD Quest"),
+    description: t(
+      "Return the greatest common divisor of a and b.",
+      "a और b का GCD लौटाएँ।",
+      "a aur b ka GCD return karo."
+    ),
+    hints: [
+      t("Use Euclid's algorithm.", "यूक्लिड का एल्गोरिदम।", "Euclid algorithm use karo."),
+      t("gcd(a,b) = gcd(b, a%b).", "gcd(a,b) = gcd(b, a%b)।", "gcd(a,b) = gcd(b, a%b)."),
+      t("When b=0, return a.", "b=0 तो a लौटाएँ।", "b=0 to a return karo."),
+    ],
+    starter: {
+      javascript: "function gcd(a, b) {\n  // your code here\n}\n",
+      python: "def gcd(a, b):\n    pass\n",
+      java: "class Solution { public int gcd(int a,int b){return 0;} }\n",
+      cpp: "int gcd(int a,int b){return 0;}\n",
+    },
+    tests: [
+      { input: "gcd(12, 18)", expected: "6" },
+      { input: "gcd(7, 13)", expected: "1" },
+      { input: "gcd(100, 75)", expected: "25" },
+    ],
+  },
+  {
+    id: "rotateArr",
+    order: 17,
+    track: "intermediate",
+    difficulty: "medium",
+    xpReward: 225,
+    funcName: "rotate",
+    title: t("Spinning Cogs", "घूमते पुर्ज़े", "Spinning Cogs"),
+    description: t(
+      "Rotate array arr to the right by k steps and return it.",
+      "arr को k कदम दाएँ rotate करें।",
+      "arr ko k steps right rotate karo."
+    ),
+    hints: [
+      t("Use slice.", "slice का उपयोग।", "slice use karo."),
+      t("k = k % arr.length.", "k = k % arr.length.", "k = k % arr.length."),
+      t("Concat last k with rest.", "अंतिम k को आगे जोड़ें।", "Last k ko aage jodo."),
+    ],
+    starter: {
+      javascript: "function rotate(arr, k) {\n  // your code here\n}\n",
+      python: "def rotate(arr, k):\n    pass\n",
+      java: "class Solution { public int[] rotate(int[] arr,int k){return arr;} }\n",
+      cpp: "#include <vector>\nstd::vector<int> rotate(std::vector<int> arr,int k){return arr;}\n",
+    },
+    tests: [
+      { input: "rotate([1,2,3,4,5], 2)", expected: "[4,5,1,2,3]" },
+      { input: "rotate([1,2,3], 0)", expected: "[1,2,3]" },
+      { input: "rotate([1,2,3,4], 5)", expected: "[4,1,2,3]" },
+    ],
+  },
+  {
+    id: "primes",
+    order: 18,
+    track: "intermediate",
+    difficulty: "hard",
+    xpReward: 275,
+    funcName: "isPrime",
+    title: t("Prime Sanctuary", "अभाज्य अभयारण्य", "Prime Sanctuary"),
+    description: t(
+      "Return true if n is a prime number, false otherwise.",
+      "अगर n अभाज्य है तो true लौटाएँ।",
+      "Agar n prime hai to true return karo."
+    ),
+    hints: [
+      t("n < 2 is not prime.", "n<2 prime नहीं।", "n<2 prime nahi."),
+      t("Check up to sqrt(n).", "sqrt(n) तक जांचें।", "sqrt(n) tak check karo."),
+      t("Return false on any divisor.", "किसी divisor पर false।", "Kisi divisor pe false."),
+    ],
+    starter: {
+      javascript: "function isPrime(n) {\n  // your code here\n}\n",
+      python: "def isPrime(n):\n    pass\n",
+      java: "class Solution { public boolean isPrime(int n){return false;} }\n",
+      cpp: "bool isPrime(int n){return false;}\n",
+    },
+    tests: [
+      { input: "isPrime(2)", expected: "true" },
+      { input: "isPrime(15)", expected: "false" },
+      { input: "isPrime(17)", expected: "true" },
+      { input: "isPrime(1)", expected: "false" },
+    ],
+  },
+  {
+    id: "flatten",
+    order: 19,
+    track: "intermediate",
+    difficulty: "hard",
+    xpReward: 275,
+    funcName: "flatten",
+    title: t("Flatten the Beast", "परत हटाओ", "Flatten Beast"),
+    description: t(
+      "Flatten a nested array of integers into a single-level array.",
+      "नेस्टेड array को एक स्तर में बदलें।",
+      "Nested array ko single level me karo."
+    ),
+    hints: [
+      t("Use recursion.", "रिकर्शन उपयोग करें।", "Recursion use karo."),
+      t("Or arr.flat(Infinity).", "arr.flat(Infinity)।", "arr.flat(Infinity)."),
+      t("Check Array.isArray.", "Array.isArray जांचें।", "Array.isArray check karo."),
+    ],
+    starter: {
+      javascript: "function flatten(arr) {\n  // your code here\n}\n",
+      python: "def flatten(arr):\n    pass\n",
+      java: "import java.util.*;\nclass Solution { public List<Integer> flatten(List<Object> arr){return new ArrayList<>();} }\n",
+      cpp: "#include <vector>\nstd::vector<int> flatten(std::vector<int> arr){return arr;}\n",
+    },
+    tests: [
+      { input: "flatten([1,[2,[3,[4]]]])", expected: "[1,2,3,4]" },
+      { input: "flatten([])", expected: "[]" },
+      { input: "flatten([[1,2],[3,4]])", expected: "[1,2,3,4]" },
+    ],
+  },
+  {
+    id: "binarySearch",
+    order: 20,
+    track: "intermediate",
+    difficulty: "hard",
+    xpReward: 350,
+    funcName: "binarySearch",
+    title: t("Binary Search Boss", "बाइनरी सर्च बॉस", "Binary Search Boss"),
+    description: t(
+      "Return index of target in sorted arr, or -1 if not found. Use binary search.",
+      "sorted arr में target का index लौटाएँ, अन्यथा -1।",
+      "Sorted arr me target ka index return karo, warna -1."
+    ),
+    hints: [
+      t("Track lo and hi pointers.", "lo और hi pointers।", "lo aur hi pointers."),
+      t("mid = (lo + hi) >> 1.", "mid = (lo+hi)>>1.", "mid = (lo+hi)>>1."),
+      t("Narrow based on comparison.", "तुलना से narrow करें।", "Comparison se narrow karo."),
+    ],
+    starter: {
+      javascript: "function binarySearch(arr, target) {\n  // your code here\n}\n",
+      python: "def binarySearch(arr, target):\n    pass\n",
+      java: "class Solution { public int binarySearch(int[] arr,int t){return -1;} }\n",
+      cpp: "#include <vector>\nint binarySearch(std::vector<int> arr,int t){return -1;}\n",
+    },
+    tests: [
+      { input: "binarySearch([1,3,5,7,9,11], 7)", expected: "3" },
+      { input: "binarySearch([1,2,3,4,5], 6)", expected: "-1" },
+      { input: "binarySearch([10,20,30,40], 10)", expected: "0" },
+      { input: "binarySearch([], 5)", expected: "-1" },
+    ],
+  },
+];
+
+export const ALL_CHALLENGES: Challenge[] = [...SEED_CHALLENGES, ...INTERMEDIATE_CHALLENGES];
 
 export const ALL_BADGES = [
   { id: "first-blood", label: "First Blood", desc: "Solve your first quest", icon: "⚔️" },

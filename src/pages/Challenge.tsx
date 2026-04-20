@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { TestResults } from "@/components/TestResults";
 import { LevelUpOverlay } from "@/components/LevelUpOverlay";
 import { useAuth } from "@/hooks/useAuth";
-import { SEED_CHALLENGES } from "@/data/seedChallenges";
+import { ALL_CHALLENGES } from "@/data/seedChallenges";
 import { runCode, type RunResult } from "@/lib/runner";
 import { levelFromXp } from "@/lib/xp";
 import { toast } from "@/hooks/use-toast";
@@ -26,9 +26,9 @@ const Challenge = () => {
   const lang = user.preferences.programmingLanguage;
   const uiLang = user.preferences.uiLanguage as UiLanguage;
 
-  const idx = SEED_CHALLENGES.findIndex((c) => c.id === id);
-  const challenge = SEED_CHALLENGES[idx];
-  const next = SEED_CHALLENGES[idx + 1];
+  const idx = ALL_CHALLENGES.findIndex((c) => c.id === id);
+  const challenge = ALL_CHALLENGES[idx];
+  const next = ALL_CHALLENGES[idx + 1];
 
   const [code, setCode] = useState<string>("");
   const [results, setResults] = useState<RunResult | null>(null);
