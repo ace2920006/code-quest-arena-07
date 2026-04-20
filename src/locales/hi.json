@@ -45,7 +45,10 @@
     "completed": "पूर्ण",
     "trackBasics": "बेसिक्स",
     "trackIntermediate": "इंटरमीडिएट",
-    "branchTitle": "अपनी शाखा चुनें"
+    "trackAdvanced": "एडवांस्ड",
+    "trackHardcore": "हार्डकोर",
+    "branchTitle": "अपनी शाखा चुनें",
+    "unlockHint": "{{track}} खोलने के लिए पिछले ट्रैक पूरे करें"
   },
   "challenge": {
     "difficulty": "कठिनाई",

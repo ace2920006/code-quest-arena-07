@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Calendar, Flame, Target } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { ALL_CHALLENGES, INTERMEDIATE_CHALLENGES, SEED_CHALLENGES, type Track } from "@/data/seedChallenges";
+import { ALL_CHALLENGES, TRACK_CHALLENGES, TRACK_ORDER, type Track } from "@/data/seedChallenges";
 import { MapNode } from "@/components/MapNode";
 import { XPBar } from "@/components/XPBar";
 import { Button } from "@/components/ui/button";
@@ -20,18 +20,33 @@ const Dashboard = () => {
   const day = Math.floor(Date.now() / 86400000);
   const daily = ALL_CHALLENGES[day % ALL_CHALLENGES.length];
 
-  const basicsDone = SEED_CHALLENGES.every((c) => user.completed.includes(c.id));
-  const [track, setTrack] = useState<Track>(basicsDone ? "intermediate" : "basics");
+  // A track is unlocked only when ALL prior tracks are 100% complete.
+  const isTrackComplete = (tr: Track) =>
+    TRACK_CHALLENGES[tr].every((c) => user.completed.includes(c.id));
+  const isTrackUnlocked = (tr: Track) => {
+    const idx = TRACK_ORDER.indexOf(tr);
+    return TRACK_ORDER.slice(0, idx).every(isTrackComplete);
+  };
 
-  const list = track === "basics" ? SEED_CHALLENGES : INTERMEDIATE_CHALLENGES;
-  // Intermediate is locked branch-wide until basics complete
-  const branchLocked = track === "intermediate" && !basicsDone;
+  // Default to the furthest unlocked-but-not-complete track
+  const defaultTrack: Track =
+    TRACK_ORDER.find((tr) => isTrackUnlocked(tr) && !isTrackComplete(tr)) ?? "basics";
+  const [track, setTrack] = useState<Track>(defaultTrack);
+
+  const list = TRACK_CHALLENGES[track];
+  const branchLocked = !isTrackUnlocked(track);
   const currentIdx = list.findIndex((c) => !user.completed.includes(c.id));
 
-  const tabs: { key: Track; label: string }[] = [
-    { key: "basics", label: t("dashboard.trackBasics") },
-    { key: "intermediate", label: t("dashboard.trackIntermediate") },
-  ];
+  const trackLabelKey: Record<Track, string> = {
+    basics: "dashboard.trackBasics",
+    intermediate: "dashboard.trackIntermediate",
+    advanced: "dashboard.trackAdvanced",
+    hardcore: "dashboard.trackHardcore",
+  };
+  const tabs: { key: Track; label: string }[] = TRACK_ORDER.map((k) => ({
+    key: k,
+    label: t(trackLabelKey[k]),
+  }));
 
   return (
     <div className="container py-8 space-y-8">
@@ -46,7 +61,7 @@ const Dashboard = () => {
               {t("dashboard.welcome", { name: user.username })}
             </h1>
             <p className="font-mono text-sm text-muted-foreground mt-1">
-              {t("dashboard.currentTrack")}: <span className="text-secondary capitalize">{user.preferences.programmingLanguage} {track === "basics" ? t("dashboard.trackBasics") : t("dashboard.trackIntermediate")}</span>
+              {t("dashboard.currentTrack")}: <span className="text-secondary capitalize">{user.preferences.programmingLanguage} {t(trackLabelKey[track])}</span>
             </p>
           </div>
           <div className="flex items-center gap-2 px-3 py-2 border-2 border-warning/50 bg-warning/10 rounded font-pixel text-[10px] text-warning">
@@ -71,7 +86,8 @@ const Dashboard = () => {
             >
               {tabs.map((tab) => {
                 const active = track === tab.key;
-                const locked = tab.key === "intermediate" && !basicsDone;
+                const locked = !isTrackUnlocked(tab.key);
+                const done = isTrackComplete(tab.key);
                 return (
                   <button
                     key={tab.key}
@@ -83,10 +99,11 @@ const Dashboard = () => {
                       active
                         ? "border-secondary bg-secondary/20 text-secondary"
                         : "border-transparent text-muted-foreground hover:text-foreground hover:border-border",
+                      locked && "opacity-60",
                     )}
                     title={locked ? t("dashboard.locked") : tab.label}
                   >
-                    {locked ? "🔒 " : ""}{tab.label}
+                    {locked ? "🔒 " : done ? "✓ " : ""}{tab.label}
                   </button>
                 );
               })}
@@ -106,7 +123,7 @@ const Dashboard = () => {
           </div>
           {branchLocked && (
             <p className="font-mono text-xs text-muted-foreground text-center">
-              🔒 {t("dashboard.trackBasics")} → {t("dashboard.trackIntermediate")}
+              🔒 {t("dashboard.unlockHint", { track: t(trackLabelKey[track]) })}
             </p>
           )}
         </section>
