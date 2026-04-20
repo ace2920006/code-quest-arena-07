@@ -1,0 +1,95 @@
+{
+  "appName": "कोडक्वेस्ट",
+  "tagline": "अपनी कोडिंग को लेवल अप करें",
+  "nav": {
+    "dashboard": "विश्व मानचित्र",
+    "profile": "प्रोफ़ाइल",
+    "leaderboard": "लीडरबोर्ड",
+    "logout": "लॉग आउट",
+    "login": "लॉग इन",
+    "signup": "अपनी यात्रा शुरू करें"
+  },
+  "landing": {
+    "heroTitle": "कोड. क्वेस्ट. विजय.",
+    "heroSubtitle": "एक पिक्सेल-आर्ट कोडिंग साहसिक यात्रा। क्वेस्ट हल करें, XP कमाएँ, और किंवदंती बनें।",
+    "ctaStart": "यात्रा शुरू करें",
+    "ctaLogin": "मेरा खाता है",
+    "feature1Title": "बहु-भाषा",
+    "feature1Desc": "JavaScript, Python, Java, C++ — अपना हथियार चुनें।",
+    "feature2Title": "असली एक्ज़ीक्यूशन",
+    "feature2Desc": "Judge0 के साथ कोड तुरंत चलाएँ। असली टेस्ट, असली नतीजे।",
+    "feature3Title": "लेवल अप",
+    "feature3Desc": "XP, स्ट्रीक, बैज, लीडरबोर्ड। कोडिंग कभी इतनी मज़ेदार नहीं थी।"
+  },
+  "auth": {
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "username": "उपयोगकर्ता नाम",
+    "login": "लॉग इन",
+    "signup": "साइन अप",
+    "switchToSignup": "नए हैं? खाता बनाएँ",
+    "switchToLogin": "पहले से खाता है? लॉग इन करें",
+    "loggingIn": "लॉग इन हो रहा है...",
+    "signingUp": "खाता बना रहे हैं..."
+  },
+  "dashboard": {
+    "welcome": "वापसी पर स्वागत है, {{name}}!",
+    "currentTrack": "वर्तमान ट्रैक",
+    "dailyChallenge": "दैनिक चुनौती",
+    "dailyChallengeDesc": "डबल XP — 24 घंटे में रीसेट",
+    "streak": "{{count}} दिन की स्ट्रीक",
+    "playDaily": "अभी खेलें",
+    "level": "लेवल {{level}}",
+    "xpTo": "{{current}}/{{next}} XP",
+    "locked": "लॉक है",
+    "completed": "पूर्ण"
+  },
+  "challenge": {
+    "difficulty": "कठिनाई",
+    "reward": "इनाम",
+    "examples": "उदाहरण",
+    "hint": "संकेत लें",
+    "hintsUsed": "{{used}}/{{total}} संकेत उपयोग",
+    "run": "चलाएँ",
+    "submit": "जमा करें",
+    "running": "चल रहा है...",
+    "tests": "टेस्ट",
+    "passed": "पास",
+    "failed": "फेल",
+    "output": "आउटपुट",
+    "expected": "अपेक्षित",
+    "next": "अगला क्वेस्ट",
+    "back": "मानचित्र पर वापस",
+    "success": "क्वेस्ट पूर्ण!",
+    "xpEarned": "+{{xp}} XP",
+    "levelUp": "लेवल अप!"
+  },
+  "profile": {
+    "title": "प्रोफ़ाइल",
+    "totalXp": "कुल XP",
+    "level": "लेवल",
+    "streak": "स्ट्रीक",
+    "badges": "बैज",
+    "skillTree": "स्किल ट्री",
+    "completed": "{{count}} क्वेस्ट पूर्ण"
+  },
+  "leaderboard": {
+    "title": "लीडरबोर्ड",
+    "global": "वैश्विक",
+    "weekly": "इस सप्ताह",
+    "rank": "रैंक",
+    "player": "खिलाड़ी",
+    "xp": "XP",
+    "you": "आप"
+  },
+  "languageSwitcher": {
+    "ui": "इंटरफ़ेस",
+    "code": "भाषा",
+    "title": "भाषाएँ"
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "कुछ गलत हो गया",
+    "tryAgain": "फिर कोशिश करें"
+  }
+}

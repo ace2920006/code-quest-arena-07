@@ -1,0 +1,89 @@
+{
+  "appName": "CodeQuest",
+  "tagline": "Apni coding ko level up karo",
+  "nav": {
+    "dashboard": "World Map",
+    "profile": "Profile",
+    "leaderboard": "Leaderboard",
+    "logout": "Log out",
+    "login": "Log in",
+    "signup": "Quest shuru karo"
+  },
+  "landing": {
+    "heroTitle": "Code. Quest. Conquer.",
+    "heroSubtitle": "Ek pixel-art coding adventure. Quests solve karo, XP kamao, aur legend ban jao.",
+    "ctaStart": "Quest shuru karo",
+    "ctaLogin": "Mera account hai"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "login": "Log in",
+    "signup": "Sign up",
+    "switchToSignup": "Naye ho? Account banao",
+    "switchToLogin": "Pehle se account hai? Log in karo",
+    "loggingIn": "Log in ho raha hai...",
+    "signingUp": "Account ban raha hai..."
+  },
+  "dashboard": {
+    "welcome": "Wapsi par swagat hai, {{name}}!",
+    "currentTrack": "Current Track",
+    "dailyChallenge": "Daily Challenge",
+    "dailyChallengeDesc": "Double XP — 24h me reset",
+    "streak": "{{count}} din ki streak",
+    "playDaily": "Abhi khelo",
+    "level": "Level {{level}}",
+    "xpTo": "{{current}}/{{next}} XP",
+    "locked": "Locked",
+    "completed": "Complete"
+  },
+  "challenge": {
+    "difficulty": "Difficulty",
+    "reward": "Reward",
+    "examples": "Examples",
+    "hint": "Hint lo",
+    "hintsUsed": "{{used}}/{{total}} hints use kiye",
+    "run": "Run",
+    "submit": "Submit",
+    "running": "Chal raha hai...",
+    "tests": "Tests",
+    "passed": "Pass",
+    "failed": "Fail",
+    "output": "Output",
+    "expected": "Expected",
+    "next": "Agla quest",
+    "back": "Map par wapas",
+    "success": "Quest complete!",
+    "xpEarned": "+{{xp}} XP",
+    "levelUp": "LEVEL UP!"
+  },
+  "profile": {
+    "title": "Profile",
+    "totalXp": "Total XP",
+    "level": "Level",
+    "streak": "Streak",
+    "badges": "Badges",
+    "skillTree": "Skill Tree",
+    "completed": "{{count}} quests complete"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "global": "Global",
+    "weekly": "Is hafte",
+    "rank": "Rank",
+    "player": "Player",
+    "xp": "XP",
+    "you": "AAP"
+  },
+  "languageSwitcher": {
+    "ui": "Interface",
+    "code": "Language",
+    "title": "Languages"
+  },
+  "common": {
+    "loading": "Load ho raha hai...",
+    "error": "Kuch galat ho gaya",
+    "tryAgain": "Phir try karo"
+  }
+}
