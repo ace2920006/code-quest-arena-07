@@ -1,0 +1,95 @@
+{
+  "appName": "CodeQuest",
+  "tagline": "Level up your coding skills",
+  "nav": {
+    "dashboard": "World Map",
+    "profile": "Profile",
+    "leaderboard": "Leaderboard",
+    "logout": "Log out",
+    "login": "Log in",
+    "signup": "Start your quest"
+  },
+  "landing": {
+    "heroTitle": "Code. Quest. Conquer.",
+    "heroSubtitle": "A pixel-art coding adventure. Solve quests, earn XP, and become a legend.",
+    "ctaStart": "Start your quest",
+    "ctaLogin": "I have an account",
+    "feature1Title": "Multi-language",
+    "feature1Desc": "JavaScript, Python, Java, C++ — your weapon of choice.",
+    "feature2Title": "Real execution",
+    "feature2Desc": "Run your code instantly via Judge0. Real tests, real results.",
+    "feature3Title": "Level up",
+    "feature3Desc": "XP, streaks, badges, leaderboards. Coding never felt this good."
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "login": "Log in",
+    "signup": "Sign up",
+    "switchToSignup": "New here? Create an account",
+    "switchToLogin": "Already have an account? Log in",
+    "loggingIn": "Logging in...",
+    "signingUp": "Creating account..."
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {{name}}!",
+    "currentTrack": "Current Track",
+    "dailyChallenge": "Daily Challenge",
+    "dailyChallengeDesc": "Double XP — resets in 24h",
+    "streak": "{{count}} day streak",
+    "playDaily": "Play now",
+    "level": "Level {{level}}",
+    "xpTo": "{{current}}/{{next}} XP",
+    "locked": "Locked",
+    "completed": "Completed"
+  },
+  "challenge": {
+    "difficulty": "Difficulty",
+    "reward": "Reward",
+    "examples": "Examples",
+    "hint": "Get a hint",
+    "hintsUsed": "{{used}}/{{total}} hints used",
+    "run": "Run",
+    "submit": "Submit",
+    "running": "Running...",
+    "tests": "Tests",
+    "passed": "Passed",
+    "failed": "Failed",
+    "output": "Output",
+    "expected": "Expected",
+    "next": "Next quest",
+    "back": "Back to map",
+    "success": "Quest complete!",
+    "xpEarned": "+{{xp}} XP",
+    "levelUp": "LEVEL UP!"
+  },
+  "profile": {
+    "title": "Profile",
+    "totalXp": "Total XP",
+    "level": "Level",
+    "streak": "Streak",
+    "badges": "Badges",
+    "skillTree": "Skill Tree",
+    "completed": "{{count}} quests completed"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "global": "Global",
+    "weekly": "This Week",
+    "rank": "Rank",
+    "player": "Player",
+    "xp": "XP",
+    "you": "YOU"
+  },
+  "languageSwitcher": {
+    "ui": "Interface",
+    "code": "Language",
+    "title": "Languages"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "tryAgain": "Try again"
+  }
+}
