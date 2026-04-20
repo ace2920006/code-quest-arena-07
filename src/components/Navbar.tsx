@@ -4,7 +4,7 @@ import { Flame, LogOut, Map, Trophy, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { LanguageToggle } from "@/components/LanguageToggle";
+import { CodeLanguagePicker } from "@/components/CodeLanguagePicker";
 import { XPBar } from "@/components/XPBar";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +43,7 @@ export function Navbar() {
             {user.streak}
           </div>
           <div className="hidden md:block">
-            <LanguageToggle />
+            <CodeLanguagePicker />
           </div>
           <LanguageSwitcher />
           <div className="h-9 w-9 rounded border-2 border-primary/60 bg-gradient-primary grid place-items-center text-primary-foreground font-pixel text-xs">
