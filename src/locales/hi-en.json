@@ -39,7 +39,10 @@
     "completed": "Complete",
     "trackBasics": "Basics",
     "trackIntermediate": "Intermediate",
-    "branchTitle": "Apni branch chuno"
+    "trackAdvanced": "Advanced",
+    "trackHardcore": "Hardcore",
+    "branchTitle": "Apni branch chuno",
+    "unlockHint": "{{track}} unlock karne ke liye pichhle tracks complete karo"
   },
   "challenge": {
     "difficulty": "Difficulty",
