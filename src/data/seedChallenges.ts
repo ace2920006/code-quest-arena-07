@@ -11,9 +11,12 @@ export interface LocalizedText {
   "hi-en": string;
 }
 
+export type Track = "basics" | "intermediate";
+
 export interface Challenge {
   id: string;
   order: number;
+  track: Track;
   difficulty: "easy" | "medium" | "hard";
   xpReward: number;
   title: LocalizedText;
