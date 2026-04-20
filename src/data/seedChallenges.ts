@@ -1,4 +1,4 @@
-import type { ProgrammingLanguage } from "./storage";
+import type { ProgrammingLanguage } from "@/lib/storage";
 
 export interface ChallengeTest {
   input: string; // call expression like `add(2, 3)` for JS
