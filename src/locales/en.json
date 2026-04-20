@@ -42,7 +42,10 @@
     "level": "Level {{level}}",
     "xpTo": "{{current}}/{{next}} XP",
     "locked": "Locked",
-    "completed": "Completed"
+    "completed": "Completed",
+    "trackBasics": "Basics",
+    "trackIntermediate": "Intermediate",
+    "branchTitle": "Choose your branch"
   },
   "challenge": {
     "difficulty": "Difficulty",
