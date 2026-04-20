@@ -45,7 +45,10 @@
     "completed": "Completed",
     "trackBasics": "Basics",
     "trackIntermediate": "Intermediate",
-    "branchTitle": "Choose your branch"
+    "trackAdvanced": "Advanced",
+    "trackHardcore": "Hardcore",
+    "branchTitle": "Choose your branch",
+    "unlockHint": "Complete previous tracks to unlock {{track}}"
   },
   "challenge": {
     "difficulty": "Difficulty",
