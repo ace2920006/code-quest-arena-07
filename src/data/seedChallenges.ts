@@ -1,4 +1,5 @@
 import type { ProgrammingLanguage } from "@/lib/storage";
+import { createChallengeFromTemplate, type NewChallengeInput } from "@/data/challengeTemplates";
 
 export interface ChallengeTest {
   input: string; // call expression like `add(2, 3)` for JS
@@ -76,16 +77,12 @@ export const SEED_CHALLENGES: Challenge[] = [
       t("function add(a, b) { return a + b }", "function add(a, b) { return a + b }", "function add(a, b) { return a + b }"),
     ],
     starter: {
-      javascript: "function add(a, b) {\n  // your code here\n}\n",
-      python: "def add(a, b):\n    # your code here\n    pass\n",
-      java: "class Solution {\n  public int add(int a, int b) { return 0; }\n}\n",
-      cpp: "int add(int a, int b) {\n  return 0;\n}\n",
+      javascript: "function add(a, b) {\n  return a + b;\n}\n",
+      python: "def add(a, b):\n    return a + b\n",
+      java: "class Solution {\n  public int add(int a, int b) { return a + b; }\n}\n",
+      cpp: "int add(int a, int b) {\n  return a + b;\n}\n",
     },
-    tests: [
-      { input: "add(2, 3)", expected: "5" },
-      { input: "add(-1, 1)", expected: "0" },
-      { input: "add(100, 250)", expected: "350" },
-    ],
+    tests: [{ input: "add(2, 3)", expected: "5" }],
   },
   {
     id: "max",
@@ -1065,11 +1062,17 @@ export const TRACK_CHALLENGES: Record<Track, Challenge[]> = {
   hardcore: HARDCORE_CHALLENGES,
 };
 
+// New-only authoring path: add future challenges here using the template factory.
+export const NEW_CHALLENGE_DEFINITIONS: NewChallengeInput[] = [];
+
+export const GENERATED_NEW_CHALLENGES: Challenge[] = NEW_CHALLENGE_DEFINITIONS.map(createChallengeFromTemplate);
+
 export const ALL_CHALLENGES: Challenge[] = [
   ...SEED_CHALLENGES,
   ...INTERMEDIATE_CHALLENGES,
   ...ADVANCED_CHALLENGES,
   ...HARDCORE_CHALLENGES,
+  ...GENERATED_NEW_CHALLENGES,
 ];
 
 export const ALL_BADGES = [

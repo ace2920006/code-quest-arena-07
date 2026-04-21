@@ -57,6 +57,28 @@ npm run dev
 - `GET /api/quests/:id` - get one quest by Mongo `_id` or `challengeId`
 - `POST /api/quests` - upsert quest (auth required)
 
+## Adding New Challenges (Hardness Templates)
+
+New challenges should use the hardness-based factory so content stays consistent by difficulty.
+
+1. Open `src/data/seedChallenges.ts`.
+2. Add a new entry to `NEW_CHALLENGE_DEFINITIONS` (do not modify existing challenge arrays unless intentional).
+3. Provide minimum author input:
+   - `id`, `order`, `track`, `difficulty`, `funcName`
+   - localized `title` and `description` (`en`, `hi`, `hi-en`)
+   - `tests` with valid function calls (e.g. `sum(1,2)`)
+4. The template factory in `src/data/challengeTemplates.ts` auto-generates:
+   - starter code for all languages,
+   - fallback hints by difficulty,
+   - default XP reward by difficulty (unless overridden).
+5. Validation runs during generation and throws if:
+   - locale text is missing,
+   - starter templates do not include `funcName`,
+   - tests are empty or don’t call `funcName(...)`.
+
+Common pitfall:
+- `tests.expected` must match runtime string output exactly (including array/object formatting), because pass/fail uses string equality.
+
 ## Execute API Example
 
 Request:

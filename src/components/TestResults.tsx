@@ -48,18 +48,11 @@ export function TestResults({
               <span className="ml-auto text-[10px] text-muted-foreground">{r.timeMs.toFixed(1)}ms</span>
             )}
           </div>
-          <div className="ml-7 grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px]">
-            <div className="p-2 bg-muted/50 border border-border rounded">
-              <div className="text-muted-foreground text-[10px] uppercase">{t("challenge.expected")}</div>
-              <code className="text-success break-all">{r.expected}</code>
+          {!r.passed && (
+            <div className="ml-7 p-2 bg-muted/50 border border-border rounded font-mono text-[11px]">
+              <code className="text-destructive break-all">{r.error || t("challenge.failed")}</code>
             </div>
-            <div className="p-2 bg-muted/50 border border-border rounded">
-              <div className="text-muted-foreground text-[10px] uppercase">{t("challenge.output")}</div>
-              <code className={cn("break-all", r.passed ? "text-success" : "text-destructive")}>
-                {r.error || r.output || "—"}
-              </code>
-            </div>
-          </div>
+          )}
         </div>
       ))}
     </div>

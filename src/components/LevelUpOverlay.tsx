@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
+import { CELEBRATION_PARTICLES, OVERLAY_MOTION } from "@/lib/overlayMotion";
 
 export function LevelUpOverlay({
   show,
@@ -14,7 +15,7 @@ export function LevelUpOverlay({
 }) {
   useEffect(() => {
     if (!show) return;
-    const t = setTimeout(onDone, 2200);
+    const t = setTimeout(onDone, OVERLAY_MOTION.autoDismissMs);
     return () => clearTimeout(t);
   }, [show, onDone]);
 
@@ -23,37 +24,56 @@ export function LevelUpOverlay({
       {show && (
         <motion.div
           className="fixed inset-0 z-50 grid place-items-center bg-background/70 backdrop-blur-sm"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={OVERLAY_MOTION.backdrop.initial}
+          animate={OVERLAY_MOTION.backdrop.animate}
+          exit={OVERLAY_MOTION.backdrop.exit}
         >
           <motion.div
-            initial={{ scale: 0.5, rotate: -8, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            exit={{ scale: 0.5, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 220, damping: 14 }}
-            className="text-center p-8 pixel-card bg-gradient-card glow-primary"
+            initial={OVERLAY_MOTION.card.initial}
+            animate={OVERLAY_MOTION.card.animate}
+            exit={OVERLAY_MOTION.card.exit}
+            transition={OVERLAY_MOTION.card.transition}
+            className="relative text-center p-8 pixel-card bg-gradient-card glow-primary"
           >
-            <div className="font-pixel text-2xl md:text-4xl text-primary text-glow-primary mb-3">
+            <motion.div
+              className="font-pixel text-2xl md:text-4xl text-primary text-glow-primary mb-3"
+              initial={OVERLAY_MOTION.stage.initial}
+              animate={OVERLAY_MOTION.stage.animate}
+              transition={{ delay: 0.05, duration: 0.25 }}
+            >
               LEVEL UP!
-            </div>
-            <div className="font-pixel text-6xl text-accent text-glow-accent mb-3">{level}</div>
-            <div className="font-mono text-sm text-muted-foreground">+{xp} XP</div>
-            {[...Array(12)].map((_, i) => (
+            </motion.div>
+            <motion.div
+              className="font-pixel text-6xl text-accent text-glow-accent mb-3"
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: [0.7, 1.08, 1], opacity: 1 }}
+              transition={{ delay: 0.18, duration: 0.35 }}
+            >
+              {level}
+            </motion.div>
+            <motion.div
+              className="font-mono text-sm text-muted-foreground"
+              initial={OVERLAY_MOTION.stage.initial}
+              animate={OVERLAY_MOTION.stage.animate}
+              transition={{ delay: 0.35, duration: 0.25 }}
+            >
+              +{xp} XP
+            </motion.div>
+            {CELEBRATION_PARTICLES.map((p, i) => (
               <motion.span
                 key={i}
                 className="absolute text-2xl"
                 initial={{ x: 0, y: 0, opacity: 1 }}
                 animate={{
-                  x: (Math.random() - 0.5) * 400,
-                  y: (Math.random() - 0.5) * 400,
+                  x: p.x,
+                  y: p.y,
                   opacity: 0,
-                  rotate: Math.random() * 360,
+                  rotate: i % 2 ? 220 : -220,
                 }}
-                transition={{ duration: 1.4, delay: i * 0.04 }}
+                transition={{ duration: 1.1, delay: 0.45 + p.delay }}
                 style={{ left: "50%", top: "50%" }}
               >
-                {["⭐", "✨", "🎉", "⚡"][i % 4]}
+                {p.icon}
               </motion.span>
             ))}
           </motion.div>

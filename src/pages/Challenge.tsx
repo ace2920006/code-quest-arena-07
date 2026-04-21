@@ -59,6 +59,7 @@ const Challenge = () => {
     track: Track;
     outputData: CompletionOutputData;
   } | null>(null);
+  const [overlayState, setOverlayState] = useState<"none" | "level" | "track">("none");
 
   useEffect(() => {
     if (!challenge) return;
@@ -169,11 +170,13 @@ const Challenge = () => {
     });
 
     if (newLevel > prevLevel) {
+      setOverlayState("level");
       setLevelUp({ level: newLevel, xp: earned });
       if (newlyUnlockedTrack) {
         setPendingTrackUnlock({ track: newlyUnlockedTrack, outputData });
       }
     } else if (newlyUnlockedTrack) {
+      setOverlayState("track");
       setTrackUnlocked({ track: newlyUnlockedTrack, outputData });
     }
   };
@@ -338,8 +341,9 @@ const Challenge = () => {
 
       {results?.passed && (
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
           className="pixel-card bg-success/10 border-success p-4 flex items-center justify-between gap-4"
         >
           <div className="flex items-center gap-3">
@@ -366,7 +370,7 @@ const Challenge = () => {
       )}
 
       <LevelUpOverlay
-        show={!!levelUp}
+        show={overlayState === "level" && !!levelUp}
         level={levelUp?.level ?? 1}
         xp={levelUp?.xp ?? 0}
         onDone={() => {
@@ -374,16 +378,26 @@ const Challenge = () => {
           if (pendingTrackUnlock) {
             setTrackUnlocked(pendingTrackUnlock);
             setPendingTrackUnlock(null);
+            setOverlayState("track");
+          } else {
+            setOverlayState("none");
           }
         }}
       />
       <TrackUnlockedOverlay
-        show={!!trackUnlocked}
+        show={overlayState === "track" && !!trackUnlocked}
         trackName={trackUnlocked ? t(trackLabelKey[trackUnlocked.track]) : ""}
         challengeTitle={challenge.title[uiLang] ?? challenge.title.en}
         outputData={trackUnlocked?.outputData}
-        onDone={() => setTrackUnlocked(null)}
-        onGoToMap={() => navigate("/dashboard")}
+        onDone={() => {
+          setTrackUnlocked(null);
+          setOverlayState("none");
+        }}
+        onGoToMap={() => {
+          setTrackUnlocked(null);
+          setOverlayState("none");
+          navigate("/dashboard");
+        }}
       />
     </div>
   );

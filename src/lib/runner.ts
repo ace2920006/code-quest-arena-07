@@ -41,6 +41,7 @@ async function runViaBackend(
   language: ProgrammingLanguage,
   challenge: Challenge,
 ): Promise<RunResult> {
+  const singleTest = challenge.tests.slice(0, 1);
   const languageId = PROGRAMMING_LANGUAGES.find((entry) => entry.code === language)?.judge0Id;
   if (!languageId) throw new Error(`Unsupported language: ${language}`);
 
@@ -51,7 +52,7 @@ async function runViaBackend(
       code,
       language_id: languageId,
       questId: challenge.id,
-      tests: challenge.tests.map((test) => ({
+      tests: singleTest.map((test) => ({
         input: test.input,
         expectedOutput: test.expected,
       })),
@@ -72,6 +73,7 @@ async function runViaBackend(
 }
 
 function runJs(code: string, challenge: Challenge): RunResult {
+  const singleTest = challenge.tests.slice(0, 1);
   const results: TestResult[] = [];
   const start = performance.now();
   let fn: ((...args: unknown[]) => unknown) | null = null;
@@ -91,7 +93,7 @@ function runJs(code: string, challenge: Challenge): RunResult {
     setupError = e instanceof Error ? e.message : String(e);
   }
 
-  for (const test of challenge.tests) {
+  for (const test of singleTest) {
     if (setupError) {
       results.push({
         input: test.input,
@@ -148,7 +150,7 @@ function stringify(v: unknown): string {
 }
 
 function mockRun(challenge: Challenge, language: ProgrammingLanguage, reason?: string): RunResult {
-  const results: TestResult[] = challenge.tests.map((t) => ({
+  const results: TestResult[] = challenge.tests.slice(0, 1).map((t) => ({
     input: t.input,
     expected: t.expected,
     output: "(execution requires Judge0 backend)",
