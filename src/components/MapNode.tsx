@@ -4,15 +4,22 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import type { Challenge } from "@/data/seedChallenges";
 import type { UiLanguage } from "@/i18n";
+import { QuestCompletionOutput } from "@/components/QuestCompletionOutput";
 
 interface Props {
   challenge: Challenge;
   state: "completed" | "current" | "locked";
   uiLang: UiLanguage;
   index: number;
+  completionOutput?: {
+    passedCount: number;
+    totalCount: number;
+    outputs: string[];
+    updatedAt: string;
+  };
 }
 
-export function MapNode({ challenge, state, uiLang, index }: Props) {
+export function MapNode({ challenge, state, uiLang, index, completionOutput }: Props) {
   const title = challenge.title[uiLang] ?? challenge.title.en;
   const isLocked = state === "locked";
 
@@ -56,6 +63,11 @@ export function MapNode({ challenge, state, uiLang, index }: Props) {
         <div className="font-mono text-[10px] text-muted-foreground capitalize">
           {challenge.difficulty}
         </div>
+        {state === "completed" && (
+          <div className="mt-2 text-left">
+            <QuestCompletionOutput data={completionOutput} compact />
+          </div>
+        )}
       </div>
     </div>
   );

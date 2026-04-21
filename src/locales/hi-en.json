@@ -62,7 +62,17 @@
     "back": "Map par wapas",
     "success": "Quest complete!",
     "xpEarned": "+{{xp}} XP",
-    "levelUp": "LEVEL UP!"
+    "levelUp": "LEVEL UP!",
+    "lastOutput": "Last Output",
+    "viewOutput": "Output dekho",
+    "hideOutput": "Output chhupao",
+    "noCompletionOutput": "Abhi tak koi completion output save nahi hua.",
+    "outputUnavailable": "Output available nahi hai",
+    "trackUnlocked": "Track unlock ho gaya!",
+    "newTrack": "Naya track",
+    "viewMap": "Map par jao",
+    "completionOutput": "Completion Output",
+    "continue": "Continue"
   },
   "profile": {
     "title": "Profile",

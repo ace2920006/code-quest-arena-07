@@ -19,6 +19,15 @@ export interface UserProgress {
   streak: number;
   lastSolvedAt: string | null;
   badges: string[];
+  completionOutputs: Record<
+    string,
+    {
+      passedCount: number;
+      totalCount: number;
+      outputs: string[];
+      updatedAt: string;
+    }
+  >;
   preferences: {
     uiLanguage: string;
     programmingLanguage: ProgrammingLanguage;
@@ -37,6 +46,7 @@ const DEFAULT_USER = (overrides?: Partial<UserProgress>): UserProgress => ({
   streak: 0,
   lastSolvedAt: null,
   badges: [],
+  completionOutputs: {},
   preferences: {
     uiLanguage: (typeof window !== "undefined" && localStorage.getItem("cq:uiLang")) || "en",
     programmingLanguage:
@@ -50,7 +60,21 @@ export const storage = {
     if (typeof window === "undefined") return null;
     try {
       const raw = localStorage.getItem(KEY);
-      return raw ? (JSON.parse(raw) as UserProgress) : null;
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as Partial<UserProgress>;
+      const fallback = DEFAULT_USER();
+      return {
+        ...fallback,
+        ...parsed,
+        badges: parsed.badges ?? [],
+        completed: parsed.completed ?? [],
+        hintsUsed: parsed.hintsUsed ?? {},
+        completionOutputs: parsed.completionOutputs ?? {},
+        preferences: {
+          ...fallback.preferences,
+          ...parsed.preferences,
+        },
+      };
     } catch {
       return null;
     }

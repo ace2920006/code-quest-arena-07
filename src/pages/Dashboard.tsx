@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Calendar, Flame, Target } from "lucide-react";
@@ -21,17 +21,29 @@ const Dashboard = () => {
   const daily = ALL_CHALLENGES[day % ALL_CHALLENGES.length];
 
   // A track is unlocked only when ALL prior tracks are 100% complete.
-  const isTrackComplete = (tr: Track) =>
-    TRACK_CHALLENGES[tr].every((c) => user.completed.includes(c.id));
-  const isTrackUnlocked = (tr: Track) => {
-    const idx = TRACK_ORDER.indexOf(tr);
-    return TRACK_ORDER.slice(0, idx).every(isTrackComplete);
-  };
+  const isTrackComplete = useCallback(
+    (tr: Track) => TRACK_CHALLENGES[tr].every((c) => user.completed.includes(c.id)),
+    [user.completed],
+  );
+  const isTrackUnlocked = useCallback(
+    (tr: Track) => {
+      const idx = TRACK_ORDER.indexOf(tr);
+      return TRACK_ORDER.slice(0, idx).every(isTrackComplete);
+    },
+    [isTrackComplete],
+  );
 
   // Default to the furthest unlocked-but-not-complete track
   const defaultTrack: Track =
     TRACK_ORDER.find((tr) => isTrackUnlocked(tr) && !isTrackComplete(tr)) ?? "basics";
   const [track, setTrack] = useState<Track>(defaultTrack);
+
+  useEffect(() => {
+    // Keep map selection aligned with newly unlocked progression after quest completion.
+    if (!isTrackUnlocked(track) || isTrackComplete(track)) {
+      setTrack(defaultTrack);
+    }
+  }, [track, defaultTrack]);
 
   const list = TRACK_CHALLENGES[track];
   const branchLocked = !isTrackUnlocked(track);
@@ -118,7 +130,16 @@ const Dashboard = () => {
                 : isCurrent
                   ? "current"
                   : "locked";
-              return <MapNode key={c.id} challenge={c} state={state} uiLang={uiLang} index={i} />;
+              return (
+                <MapNode
+                  key={c.id}
+                  challenge={c}
+                  state={state}
+                  uiLang={uiLang}
+                  index={i}
+                  completionOutput={user.completionOutputs[c.id]}
+                />
+              );
             })}
           </div>
           {branchLocked && (

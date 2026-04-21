@@ -68,7 +68,17 @@
     "back": "मानचित्र पर वापस",
     "success": "क्वेस्ट पूर्ण!",
     "xpEarned": "+{{xp}} XP",
-    "levelUp": "लेवल अप!"
+    "levelUp": "लेवल अप!",
+    "lastOutput": "आखिरी आउटपुट",
+    "viewOutput": "आउटपुट देखें",
+    "hideOutput": "आउटपुट छुपाएँ",
+    "noCompletionOutput": "अभी तक कोई पूर्णता आउटपुट सहेजा नहीं गया।",
+    "outputUnavailable": "आउटपुट उपलब्ध नहीं है",
+    "trackUnlocked": "ट्रैक अनलॉक हुआ!",
+    "newTrack": "नया ट्रैक",
+    "viewMap": "मैप पर जाएँ",
+    "completionOutput": "पूर्णता आउटपुट",
+    "continue": "जारी रखें"
   },
   "profile": {
     "title": "प्रोफ़ाइल",

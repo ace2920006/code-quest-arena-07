@@ -7,14 +7,30 @@ import { ArrowLeft, ArrowRight, Lightbulb, Play, Send, Star, Trophy } from "luci
 import { Button } from "@/components/ui/button";
 import { TestResults } from "@/components/TestResults";
 import { LevelUpOverlay } from "@/components/LevelUpOverlay";
+import { QuestCompletionOutput, type CompletionOutputData } from "@/components/QuestCompletionOutput";
+import { TrackUnlockedOverlay } from "@/components/TrackUnlockedOverlay";
 import { useAuth } from "@/hooks/useAuth";
-import { ALL_CHALLENGES } from "@/data/seedChallenges";
+import { ALL_CHALLENGES, TRACK_CHALLENGES, TRACK_ORDER, type Track } from "@/data/seedChallenges";
 import { runCode, type RunResult } from "@/lib/runner";
 import { levelFromXp } from "@/lib/xp";
 import { toast } from "@/hooks/use-toast";
 import type { UiLanguage } from "@/i18n";
 
 const monacoLang = (l: string) => (l === "cpp" ? "cpp" : l);
+
+const toCompletionOutput = (results: RunResult["results"], updatedAt: string): CompletionOutputData => ({
+  passedCount: results.filter((x) => x.passed).length,
+  totalCount: results.length,
+  outputs: results.map((x) => x.error || x.output || "—"),
+  updatedAt,
+});
+
+const getUnlockedTracks = (completedIds: string[]): Track[] =>
+  TRACK_ORDER.filter((track, idx) =>
+    TRACK_ORDER.slice(0, idx).every((prevTrack) =>
+      TRACK_CHALLENGES[prevTrack].every((c) => completedIds.includes(c.id)),
+    ),
+  );
 
 const Challenge = () => {
   const { t } = useTranslation();
@@ -35,6 +51,14 @@ const Challenge = () => {
   const [loading, setLoading] = useState(false);
   const [hintsShown, setHintsShown] = useState(0);
   const [levelUp, setLevelUp] = useState<{ level: number; xp: number } | null>(null);
+  const [trackUnlocked, setTrackUnlocked] = useState<{
+    track: Track;
+    outputData: CompletionOutputData;
+  } | null>(null);
+  const [pendingTrackUnlock, setPendingTrackUnlock] = useState<{
+    track: Track;
+    outputData: CompletionOutputData;
+  } | null>(null);
 
   useEffect(() => {
     if (!challenge) return;
@@ -78,6 +102,14 @@ const Challenge = () => {
     }
 
     if (alreadyCompleted) {
+      const outputData = toCompletionOutput(r.results, new Date().toISOString());
+      update((u) => ({
+        ...u,
+        completionOutputs: {
+          ...u.completionOutputs,
+          [challenge.id]: outputData,
+        },
+      }));
       toast({ title: t("challenge.success"), description: "Already completed — no extra XP." });
       return;
     }
@@ -90,6 +122,11 @@ const Challenge = () => {
     const prevLevel = levelFromXp(user.xp);
     const newXp = user.xp + earned;
     const newLevel = levelFromXp(newXp);
+    const completedBefore = user.completed;
+    const completedAfter = [...completedBefore, challenge.id];
+    const unlockedBefore = getUnlockedTracks(completedBefore);
+    const unlockedAfter = getUnlockedTracks(completedAfter);
+    const newlyUnlockedTrack = unlockedAfter.find((track) => !unlockedBefore.includes(track));
 
     // Streak update
     const today = new Date();
@@ -111,13 +148,19 @@ const Challenge = () => {
     if (hintsShown === 0) badges.add("no-hints");
     if (challenge.id === "fibonacci") badges.add("boss-slayer");
 
+    const outputData = toCompletionOutput(r.results, today.toISOString());
+
     update((u) => ({
       ...u,
       xp: newXp,
-      completed: [...u.completed, challenge.id],
+      completed: completedAfter,
       streak,
       lastSolvedAt: today.toISOString(),
       badges: Array.from(badges),
+      completionOutputs: {
+        ...u.completionOutputs,
+        [challenge.id]: outputData,
+      },
     }));
 
     toast({
@@ -127,6 +170,11 @@ const Challenge = () => {
 
     if (newLevel > prevLevel) {
       setLevelUp({ level: newLevel, xp: earned });
+      if (newlyUnlockedTrack) {
+        setPendingTrackUnlock({ track: newlyUnlockedTrack, outputData });
+      }
+    } else if (newlyUnlockedTrack) {
+      setTrackUnlocked({ track: newlyUnlockedTrack, outputData });
     }
   };
 
@@ -135,6 +183,13 @@ const Challenge = () => {
     const newCount = hintsShown + 1;
     setHintsShown(newCount);
     update((u) => ({ ...u, hintsUsed: { ...u.hintsUsed, [challenge.id]: newCount } }));
+  };
+
+  const trackLabelKey: Record<Track, string> = {
+    basics: "dashboard.trackBasics",
+    intermediate: "dashboard.trackIntermediate",
+    advanced: "dashboard.trackAdvanced",
+    hardcore: "dashboard.trackHardcore",
   };
 
   return (
@@ -296,6 +351,9 @@ const Challenge = () => {
               </div>
             </div>
           </div>
+          <div className="min-w-0 flex-1">
+            <QuestCompletionOutput data={user.completionOutputs[challenge.id]} compact />
+          </div>
           {next && (
             <Button
               onClick={() => navigate(`/challenge/${next.id}`)}
@@ -311,7 +369,21 @@ const Challenge = () => {
         show={!!levelUp}
         level={levelUp?.level ?? 1}
         xp={levelUp?.xp ?? 0}
-        onDone={() => setLevelUp(null)}
+        onDone={() => {
+          setLevelUp(null);
+          if (pendingTrackUnlock) {
+            setTrackUnlocked(pendingTrackUnlock);
+            setPendingTrackUnlock(null);
+          }
+        }}
+      />
+      <TrackUnlockedOverlay
+        show={!!trackUnlocked}
+        trackName={trackUnlocked ? t(trackLabelKey[trackUnlocked.track]) : ""}
+        challengeTitle={challenge.title[uiLang] ?? challenge.title.en}
+        outputData={trackUnlocked?.outputData}
+        onDone={() => setTrackUnlocked(null)}
+        onGoToMap={() => navigate("/dashboard")}
       />
     </div>
   );

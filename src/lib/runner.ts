@@ -1,5 +1,5 @@
 import type { Challenge } from "@/data/seedChallenges";
-import type { ProgrammingLanguage } from "./storage";
+import { PROGRAMMING_LANGUAGES, type ProgrammingLanguage } from "./storage";
 
 export interface TestResult {
   input: string;
@@ -26,31 +26,69 @@ export async function runCode(
   language: ProgrammingLanguage,
   challenge: Challenge,
 ): Promise<RunResult> {
-  if (language === "javascript") {
-    return runJs(code, challenge);
+  try {
+    return await runViaBackend(code, language, challenge);
+  } catch (error) {
+    if (language === "javascript") {
+      return runJs(code, challenge);
+    }
+    return mockRun(challenge, language, error instanceof Error ? error.message : String(error));
   }
-  // Mock for other languages
-  return mockRun(challenge, language);
+}
+
+async function runViaBackend(
+  code: string,
+  language: ProgrammingLanguage,
+  challenge: Challenge,
+): Promise<RunResult> {
+  const languageId = PROGRAMMING_LANGUAGES.find((entry) => entry.code === language)?.judge0Id;
+  if (!languageId) throw new Error(`Unsupported language: ${language}`);
+
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000"}/api/execute`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      code,
+      language_id: languageId,
+      questId: challenge.id,
+      tests: challenge.tests.map((test) => ({
+        input: test.input,
+        expectedOutput: test.expected,
+      })),
+    }),
+  });
+
+  if (!response.ok) {
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.error || `Backend returned ${response.status}`);
+  }
+
+  const payload = await response.json();
+  return {
+    results: payload.results ?? [],
+    passed: Boolean(payload.passed),
+    totalTimeMs: Number(payload.totalTimeMs || 0),
+  };
 }
 
 function runJs(code: string, challenge: Challenge): RunResult {
   const results: TestResult[] = [];
   const start = performance.now();
-  let fn: any = null;
+  let fn: ((...args: unknown[]) => unknown) | null = null;
   let setupError: string | null = null;
 
   try {
     // Wrap user code so we can extract their function from a sandboxed scope.
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval, no-new-func
     const factory = new Function(
       `${code}\n; return (typeof ${challenge.funcName} !== 'undefined') ? ${challenge.funcName} : null;`,
-    );
-    fn = factory();
+    ) as () => unknown;
+    const maybeFn = factory();
+    fn = typeof maybeFn === "function" ? (maybeFn as (...args: unknown[]) => unknown) : null;
     if (typeof fn !== "function") {
       setupError = `Function ${challenge.funcName} is not defined.`;
     }
-  } catch (e: any) {
-    setupError = e?.message || String(e);
+  } catch (e: unknown) {
+    setupError = e instanceof Error ? e.message : String(e);
   }
 
   for (const test of challenge.tests) {
@@ -65,11 +103,13 @@ function runJs(code: string, challenge: Challenge): RunResult {
       continue;
     }
     try {
+      if (!fn) {
+        throw new Error(`Function ${challenge.funcName} is not defined.`);
+      }
       // Build a runner that calls the test expression but with `fn` injected as the function name.
       // Replace funcName(...) -> __fn(...)
       const expr = test.input.replace(new RegExp(`\\b${challenge.funcName}\\b`, "g"), "__fn");
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval, no-new-func
-      const runner = new Function("__fn", `return (${expr});`);
+      const runner = new Function("__fn", `return (${expr});`) as (fnArg: (...args: unknown[]) => unknown) => unknown;
       const t0 = performance.now();
       const out = runner(fn);
       const dt = performance.now() - t0;
@@ -81,13 +121,13 @@ function runJs(code: string, challenge: Challenge): RunResult {
         passed: outStr === test.expected,
         timeMs: dt,
       });
-    } catch (e: any) {
+    } catch (e: unknown) {
       results.push({
         input: test.input,
         expected: test.expected,
         output: "",
         passed: false,
-        error: e?.message || String(e),
+        error: e instanceof Error ? e.message : String(e),
       });
     }
   }
@@ -107,13 +147,15 @@ function stringify(v: unknown): string {
   return String(v);
 }
 
-function mockRun(challenge: Challenge, language: ProgrammingLanguage): RunResult {
+function mockRun(challenge: Challenge, language: ProgrammingLanguage, reason?: string): RunResult {
   const results: TestResult[] = challenge.tests.map((t) => ({
     input: t.input,
     expected: t.expected,
     output: "(execution requires Judge0 backend)",
     passed: false,
-    error: `${language} execution not yet wired. Connect Judge0 via your backend's POST /execute.`,
+    error:
+      `${language} execution not yet wired. Connect Judge0 via your backend's POST /execute.` +
+      (reason ? ` (${reason})` : ""),
   }));
   return { results, passed: false, totalTimeMs: 0 };
 }

@@ -4,6 +4,7 @@ import { Flame, Star, Trophy } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { ALL_BADGES, SEED_CHALLENGES } from "@/data/seedChallenges";
 import { XPBar } from "@/components/XPBar";
+import { QuestCompletionOutput } from "@/components/QuestCompletionOutput";
 import { progressInLevel } from "@/lib/xp";
 import { cn } from "@/lib/utils";
 
@@ -77,6 +78,11 @@ const Profile = () => {
                 )}
               >
                 {c.order}. {c.title.en}
+                {done && (
+                  <div className="mt-2">
+                    <QuestCompletionOutput data={user.completionOutputs[c.id]} compact />
+                  </div>
+                )}
               </div>
             );
           })}

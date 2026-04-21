@@ -68,7 +68,17 @@
     "back": "Back to map",
     "success": "Quest complete!",
     "xpEarned": "+{{xp}} XP",
-    "levelUp": "LEVEL UP!"
+    "levelUp": "LEVEL UP!",
+    "lastOutput": "Last Output",
+    "viewOutput": "View Output",
+    "hideOutput": "Hide Output",
+    "noCompletionOutput": "No completion output saved yet.",
+    "outputUnavailable": "Output unavailable",
+    "trackUnlocked": "Track Unlocked!",
+    "newTrack": "New Track",
+    "viewMap": "Go to map",
+    "completionOutput": "Completion Output",
+    "continue": "Continue"
   },
   "profile": {
     "title": "Profile",
